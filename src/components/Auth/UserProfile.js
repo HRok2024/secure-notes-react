@@ -17,7 +17,7 @@ import moment from "moment";
 import Errors from "../Errors";
 
 const UserProfile = () => {
-  // Access the currentUser and token hook using the useMyContext custom hook from the ContextProvider
+  //컨텍스트로 토큰과 유저정보를 가져온다
   const { currentUser, token } = useMyContext();
   //set the loggin session from the token
   const [loginSession, setLoginSession] = useState(null);
