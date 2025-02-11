@@ -15,11 +15,11 @@ import { useEffect } from "react";
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const Login = () => {
-  // Step 1: Login method and Step 2: Verify 2FA
+  //로그인 페이지
   const [step, setStep] = useState(1);
   const [jwtToken, setJwtToken] = useState("");
   const [loading, setLoading] = useState(false);
-  // Access the token and setToken function using the useMyContext hook from the ContextProvider
+  //컨텍스트로 토큰을 가져온다
   const { setToken, token } = useMyContext();
   const navigate = useNavigate();
 
@@ -37,7 +37,7 @@ const Login = () => {
     },
     mode: "onTouched",
   });
-
+  //로그인 성공시
   const handleSuccessfulLogin = (token, decodedToken) => {
     const user = {
       username: decodedToken.sub,
@@ -46,36 +46,32 @@ const Login = () => {
     localStorage.setItem("JWT_TOKEN", token);
     localStorage.setItem("USER", JSON.stringify(user));
 
-    //store the token on the context state  so that it can be shared any where in our application by context provider
+    //컨텍스트에 토큰을 저장
     setToken(token);
-
+    //노트 페이지로 이동
     navigate("/notes");
   };
 
-  //function for handle login with credentials
+  //로그인 함수
   const onLoginHandler = async (data) => {
     try {
-      setLoading(true);
+      setLoading(true); //로딩시작
       const response = await api.post("/auth/public/signin", data);
 
-      //showing success message with react hot toast
-      toast.success("Login Successful");
-
-      //reset the input field by using reset() function provided by react hook form after submission
-      reset();
+      toast.success("로그인 성공!");
+      reset(); //입력창 리셋
 
       if (response.status === 200 && response.data.jwtToken) {
         setJwtToken(response.data.jwtToken);
         const decodedToken = jwtDecode(response.data.jwtToken);
+        console.log(decodedToken); //토큰 복호화
         if (decodedToken.is2faEnabled) {
           setStep(2); // Move to 2FA verification step
         } else {
           handleSuccessfulLogin(response.data.jwtToken, decodedToken);
         }
       } else {
-        toast.error(
-          "Login failed. Please check your credentials and try again."
-        );
+        toast.error("로그인 실패! 유저네임과 패스워드를 확인해주세요");
       }
     } catch (error) {
       if (error) {
@@ -112,7 +108,7 @@ const Login = () => {
     }
   };
 
-  //if there is token  exist navigate  the user to the home page if he tried to access the login page
+  //토큰이 있으면 로그인생략, 홈페이지로 간다
   useEffect(() => {
     if (token) navigate("/");
   }, [navigate, token]);
