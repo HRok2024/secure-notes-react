@@ -5,12 +5,12 @@ import { RxCross2 } from "react-icons/rx";
 import { useMyContext } from "../store/ContextApi";
 
 const Navbar = () => {
-  //handle the header opening and closing menu for the tablet/mobile device
+  //태블릿 모바일 사이즈에서는 햄버거버튼으로 변경
   const [headerToggle, setHeaderToggle] = useState(false);
   const pathName = useLocation().pathname;
   const navigate = useNavigate();
 
-  // Access the states by using the useMyContext hook from the ContextProvider
+  //컨텍스트로 정보를 가져온다
   const { token, setToken, setCurrentUser, isAdmin, setIsAdmin } =
     useMyContext();
 
