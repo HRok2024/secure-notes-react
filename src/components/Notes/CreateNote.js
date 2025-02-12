@@ -1,35 +1,37 @@
 import React, { useState } from "react";
-import ReactQuill from "react-quill";
+import ReactQuill from "react-quill"; //퀄 라이브러리
 import "react-quill/dist/quill.snow.css";
 import { MdNoteAlt } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import Buttons from "../../utils/Buttons";
 import toast from "react-hot-toast";
-
+//노트 작성 페이지
 const CreateNote = () => {
-  const navigate = useNavigate();
-  //set the content of the reactquill
+  const navigate = useNavigate(); //네비객체
+  //리액트퀄의 입력내용 관리
   const [editorContent, setEditorContent] = useState("");
   const [loading, setLoading] = useState(false);
 
+  //에디터의 내용이 바뀌면 그 내용을 에디터 컨텐트에 저장
   const handleChange = (content, delta, source, editor) => {
+    console.log(content, delta, source, editor);
     setEditorContent(content);
   };
 
-  //note create handler
+  //제출버튼을 누르면 에디터내용을 서버로 보내서 저장한다
   const handleSubmit = async () => {
     if (editorContent.trim().length === 0) {
-      return toast.error("Note content is required");
+      return toast.error("내용을 적어주세요!");
     }
     try {
       setLoading(true);
       const noteData = { content: editorContent };
       await api.post("/notes", noteData);
-      toast.success("Note create successful");
+      toast.success("새노트 작성완료!"); //전체 노트페이지로 이동
       navigate("/notes");
     } catch (err) {
-      toast.error("Error creating note");
+      toast.error("노트작성중 에러");
     } finally {
       setLoading(false);
     }
@@ -63,6 +65,13 @@ const CreateNote = () => {
                 { list: "bullet" },
                 { indent: "-1" },
                 { indent: "+1" },
+              ],
+              [{ align: [] }],
+              [
+                {
+                  color: [],
+                },
+                { background: [] },
               ],
               ["clean"],
             ],
