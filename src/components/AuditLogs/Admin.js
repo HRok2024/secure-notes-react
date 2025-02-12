@@ -6,9 +6,9 @@ import UserDetails from "./UserDetails";
 import { useMyContext } from "../../store/ContextApi";
 import AuditLogsDetails from "./AuditLogsDetails";
 import AdminAuditLogs from "./AdminAuditLogs";
-
+//관리자 페이지 /admin/**로 시작
 const Admin = () => {
-  // Access the openSidebar hook using the useMyContext hook from the ContextProvider
+  //왼쪽 사이드바 열기 확인
   const { openSidebar } = useMyContext();
   return (
     <div className="flex">
