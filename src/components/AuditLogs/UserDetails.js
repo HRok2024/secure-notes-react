@@ -33,7 +33,7 @@ const UserDetails = () => {
   const [selectedRole, setSelectedRole] = useState("");
   const [error, setError] = useState(null);
   const [isEditingPassword, setIsEditingPassword] = useState(false);
-
+  //유저 정보를 가져온다
   const fetchUserDetails = useCallback(async () => {
     setLoading(true);
     try {
@@ -43,14 +43,14 @@ const UserDetails = () => {
       setSelectedRole(response.data.role?.roleName || "");
     } catch (err) {
       setError(err?.response?.data?.message);
-      console.error("Error fetching user details", err);
+      console.error("유저정보 가져오기 에러", err);
     } finally {
       setLoading(false);
     }
   }, [userId]);
 
   useEffect(() => {
-    //if user exist set the value by using the setValue function provided my react-hook-form
+    //react-hook-form에 유저이름과 이메일을 업데이트
     if (user && Object.keys(user).length > 0) {
       setValue("username", user.userName);
       setValue("email", user.email);
@@ -63,10 +63,11 @@ const UserDetails = () => {
       setRoles(response.data);
     } catch (err) {
       setError(err?.response?.data?.message);
-      console.error("Error fetching roles", err);
+      console.error("권한 가져오기 에러", err);
     }
   }, []);
 
+  //처음 시작시 유저정보와 권한을 가져온다
   useEffect(() => {
     fetchUserDetails();
     fetchRoles();
@@ -198,7 +199,7 @@ const UserDetails = () => {
                 onSubmit={handleSubmit(handleSavePassword)}
               >
                 <InputField
-                  label="UserName"
+                  label="유저네임"
                   required
                   id="username"
                   className="w-full"
@@ -210,7 +211,7 @@ const UserDetails = () => {
                   readOnly
                 />
                 <InputField
-                  label="Email"
+                  label="이메일"
                   required
                   id="email"
                   className="flex-1"
@@ -222,7 +223,7 @@ const UserDetails = () => {
                   readOnly
                 />
                 <InputField
-                  label="Password"
+                  label="비밀번호"
                   required
                   autoFocus={isEditingPassword}
                   id="password"
@@ -243,7 +244,7 @@ const UserDetails = () => {
                     }
                     className="bg-customRed mb-0 w-fit px-4 py-2 rounded-md text-white"
                   >
-                    Click To Edit Password
+                    비밀번호 수정
                   </Buttons>
                 ) : (
                   <div className="flex items-center gap-2 ">
@@ -251,7 +252,7 @@ const UserDetails = () => {
                       type="submit"
                       className="bg-btnColor mb-0 w-fit px-4 py-2 rounded-md text-white"
                     >
-                      {passwordLoader ? "Loading.." : "Save"}
+                      {passwordLoader ? "Loading.." : "저장"}
                     </Buttons>
                     <Buttons
                       type="button"
@@ -260,7 +261,7 @@ const UserDetails = () => {
                       }
                       className="bg-customRed mb-0 w-fit px-4 py-2 rounded-md text-white"
                     >
-                      Cancel
+                      취소
                     </Buttons>
                   </div>
                 )}
@@ -269,7 +270,7 @@ const UserDetails = () => {
           </div>
           <div className="lg:w-[70%] sm:w-[90%] w-full  mx-auto shadow-lg shadow-gray-300 p-8 rounded-md">
             <h1 className="text-slate-800 text-2xl font-bold  pb-4">
-              Admin Actions
+              관리자 액션
               <hr />
             </h1>
 
@@ -298,7 +299,7 @@ const UserDetails = () => {
                 className="bg-btnColor hover:text-slate-300 px-4 py-2 rounded-md text-white "
                 onClick={handleUpdateRole}
               >
-                {updateRoleLoader ? "Loading..." : "Update Role"}
+                {updateRoleLoader ? "로딩중..." : "권한 업데이트"}
               </button>
             </div>
 
