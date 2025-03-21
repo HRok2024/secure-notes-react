@@ -21,7 +21,7 @@ const ResetPassword = () => {
   });
 
   const [loading, setLoading] = useState(false);
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearchParams(); //쿼리스트링(?~ㅇㅇ=ㅁㅁㅁ) 문자열
 
   const handleResetPassword = async (data) => {
     const { password } = data;
